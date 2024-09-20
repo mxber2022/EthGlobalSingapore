@@ -11,16 +11,20 @@ function SendEther() {
     async function send() {
         if(transport)
             {
+            const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/d9e68a4d18c8455c9596b5d386af2a65");
+            const feeData = await provider.getFeeData();
             const transaction = {
                 to: "0x7199D548f1B30EA083Fe668202fd5E621241CC89",
-                chainId: "11155111",
+                chainId: 11155111,
                 data: "0x00",
                 value: ethers.toBeHex(ethers.parseUnits("0.001", "ether")),
+                //@ts-ignore
+                gasPrice: feeData.gasPrice,
+                gasLimit: ethers.toBeHex(1000000),
             }
             let  _eth = new Eth(transport);
             const { address } = await _eth.getAddress("44'/60'/0'/0/0", false);
             console.log("address: ", address);
-            const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/d9e68a4d18c8455c9596b5d386af2a65");
             let unsignedTx = ethers.Transaction.from(transaction).unsignedSerialized.substring(2);
             const resolution = await ledgerService.resolveTransaction(unsignedTx, {}, {});
         
