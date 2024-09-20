@@ -5,20 +5,30 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
+    "@ledgerhq/hw-app-btc": "^10.4.2",
+    "@ledgerhq/hw-app-eth": "^6.38.1",
+    "@ledgerhq/hw-transport-web-ble": "^6.29.3",
+    "@ledgerhq/hw-transport-webhid": "^6.29.3",
+    "@ledgerhq/hw-transport-webusb": "^6.29.3",
+    "@ledgerhq/logs": "^6.12.0",
+    "core-js": "^3.38.1",
+    "eip55": "^2.1.1",
+    "next": "14.2.13",
+    "qrcode": "^1.5.4",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.13"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "parcel": "^2.12.0",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }
