@@ -36,7 +36,7 @@ const Nav = () => {
       }
     };
 
-    handleLedgerConnection();
+   // handleLedgerConnection();
   }, [transport]); // Run the effect whenever `transport` updates
 
   return (
