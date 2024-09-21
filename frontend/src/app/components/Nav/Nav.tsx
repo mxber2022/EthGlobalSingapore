@@ -1,5 +1,4 @@
 "use client";
-import "./Nav.css";
 import { useTransport } from '../../contexts/TransportContext';
 import Eth from "@ledgerhq/hw-app-eth";
 import { useEffect, useState } from 'react';
@@ -41,7 +40,7 @@ const Nav = () => {
   return (
     <div className="navbar">
       <div className="logo">
-        <h1 className="title">My Ledger App</h1>
+        <h1 className="title">SoulPass</h1>
       </div>
       <div className="actions">
         {loading && <p className="loading">Initializing transport...</p>}

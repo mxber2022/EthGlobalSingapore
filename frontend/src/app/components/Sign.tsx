@@ -1,14 +1,13 @@
-"use client"
+"use client";
 import { useTransport } from '../contexts/TransportContext';
-import { ethers } from "ethers";
 import Eth from "@ledgerhq/hw-app-eth";
-import ledgerService from "@ledgerhq/hw-app-eth/lib/services/ledger";
 import { useState } from "react";
 
 const Sign: React.FC = () => {
     const { transport, loading, error, initializeTransport } = useTransport();
     const [signedMessage, setSignedMessage] = useState<string | null>(null);
     const [signingError, setSigningError] = useState<string | null>(null);
+    const [processing, setProcessing] = useState<boolean>(false); // New state for processing
 
     const sign = async () => {
         try {
@@ -17,55 +16,62 @@ const Sign: React.FC = () => {
                 return;
             }
 
+            setProcessing(true); // Set processing state to true when signing starts
+
             const eth = new Eth(transport);
-
-            // Replace this with the actual derivation path if needed
             const derivationPath = "44'/60'/0'/0/0";
-
-            // Message to be signed
-            const message = "Hello Ledger!";
+            const message = "Sign in to access content!";
             const messageHex = Buffer.from(message, "utf-8").toString("hex");
-
-            // Sign personal message using the Ledger device
             const signature = await eth.signPersonalMessage(derivationPath, messageHex);
 
-            // Build the signed message hash
             const signedHash = `0x${signature.r}${signature.s}${signature.v.toString(16)}`;
-
-            // Update state with the signed message
             setSignedMessage(signedHash);
             setSigningError(null);
         } catch (e: any) {
             setSigningError(`Error signing message: ${e.message || e}`);
             setSignedMessage(null);
+        } finally {
+            setProcessing(false); // Reset processing state after signing is complete
         }
     };
 
     return (
-        <>
-            <button onClick={sign} disabled={loading}>
+        <div className="sign-container">
+            <h1 className="sign-title">Sign in to Access Token-Gated Content</h1>
+
+            <button
+                onClick={sign}
+                disabled={loading || processing}
+                className={`sign-button ${loading || processing ? 'disabled-button' : ''}`}
+            >
                 {loading ? "Connecting..." : "Sign Message"}
             </button>
 
+            {processing && (
+                <div className="processing-message">
+                    <p>Please check your Ledger device and follow the instructions to sign the message. Once signed, you'll be granted access to the content. Thank you for your patience!</p>
+                </div>
+            )}
+
             {signedMessage && (
-                <div>
+                <div className="signed-message">
                     <h2>Signed Message:</h2>
                     <p>{signedMessage}</p>
                 </div>
             )}
 
             {signingError && (
-                <div style={{ color: "red" }}>
+                <div className="error-message">
                     <p>{signingError}</p>
                 </div>
             )}
 
             {error && (
-                <div style={{ color: "red" }}>
+                <div className="error-message">
                     <p>{error}</p>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 
