@@ -1,11 +1,11 @@
 import Nav from "./components/Nav";
-import SendEther from "./components/SendEther";
+import Mint from "./components/Mint";
 
 export default function Home() {
   return (
     <>
       <Nav/>
-      <SendEther/>
+      <Mint/>
     </>
   );
 }
