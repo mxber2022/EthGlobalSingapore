@@ -1,12 +1,13 @@
 "use client";
 
 import { useTransport } from '../contexts/TransportContext';
-import AppBtc from "@ledgerhq/hw-app-btc";
+import Eth from "@ledgerhq/hw-app-eth";
 import { useEffect, useState } from 'react';
 
 const Nav = () => {
   const { transport, loading, error, initializeTransport } = useTransport();
   const [isConnected, setIsConnected] = useState(false);
+  const [ethAddress, setEthAddress] = useState("");
 
   async function connect() {
     if (!transport) {
@@ -19,16 +20,9 @@ const Nav = () => {
     const handleLedgerConnection = async () => {
       if (transport) {
         try {
-          const appBtc = new AppBtc({ transport }); // Pass transport as an object
-          const { bitcoinAddress } = await appBtc.getWalletPublicKey(
-            "44'/0'/0'/0/0",
-            { verify: false, format: "legacy" }
-          );
-
-          console.log("bitcoinAddress: ", bitcoinAddress);
-          // Display the address on the Ledger device and ask to verify the address
-          await appBtc.getWalletPublicKey("44'/0'/0'/0/0", { format: "legacy", verify: true });
-
+          let _eth = new Eth(transport);
+          const { address } = await _eth.getAddress("44'/60'/0'/0/0", false);
+          setEthAddress(address); // Store the address
           setIsConnected(true); // Set state to reflect successful connection
         } catch (err) {
           console.error("Error connecting to Ledger:", err);
@@ -36,8 +30,13 @@ const Nav = () => {
       }
     };
 
-   // handleLedgerConnection();
+    handleLedgerConnection();
   }, [transport]); // Run the effect whenever `transport` updates
+
+  const formatAddress = (address: any) => {
+    if (!address) return '';
+    return `${address.slice(0, 4)}...${address.slice(-4)}`;
+  };
 
   return (
     <div>
@@ -45,10 +44,10 @@ const Nav = () => {
       {error && <p>Error: {error}</p>}
       {!isConnected ? (
         <button onClick={connect} disabled={loading}>
-          Initialize Transport
+          Connect Ledger
         </button>
       ) : (
-        <p>Transport initialized and connected successfully!</p>
+        <p>Connected to Ledger, Address: {formatAddress(ethAddress)}</p>
       )}
     </div>
   );
