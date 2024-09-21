@@ -1,0 +1,64 @@
+/* Nav.css */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #1a1a2e;
+  color: #eaeaea;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #00f5d4;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #00f5d4;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:disabled {
+  background-color: #999999;
+  cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #00d1b1;
+}
+
+.connected {
+  font-size: 18px;
+  color: #00f5d4;
+}
+
+.loading {
+  font-size: 16px;
+  color: #ff6b6b;
+}
+
+.error {
+  font-size: 16px;
+  color: #f56565;
+}

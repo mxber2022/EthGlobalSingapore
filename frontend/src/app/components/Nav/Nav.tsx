@@ -1,8 +1,9 @@
 "use client";
-
-import { useTransport } from '../contexts/TransportContext';
+import "./Nav.css";
+import { useTransport } from '../../contexts/TransportContext';
 import Eth from "@ledgerhq/hw-app-eth";
 import { useEffect, useState } from 'react';
+//import "./Nav.css"; // Importing the regular CSS file
 
 const Nav = () => {
   const { transport, loading, error, initializeTransport } = useTransport();
@@ -11,19 +12,18 @@ const Nav = () => {
 
   async function connect() {
     if (!transport) {
-      await initializeTransport(); // Initialize transport if it's not initialized yet
+      await initializeTransport();
     }
   }
 
   useEffect(() => {
-    // This effect runs when the transport is updated (after initializeTransport)
     const handleLedgerConnection = async () => {
       if (transport) {
         try {
           let _eth = new Eth(transport);
           const { address } = await _eth.getAddress("44'/60'/0'/0/0", false);
-          setEthAddress(address); // Store the address
-          setIsConnected(true); // Set state to reflect successful connection
+          setEthAddress(address);
+          setIsConnected(true);
         } catch (err) {
           console.error("Error connecting to Ledger:", err);
         }
@@ -31,7 +31,7 @@ const Nav = () => {
     };
 
     handleLedgerConnection();
-  }, [transport]); // Run the effect whenever `transport` updates
+  }, [transport]);
 
   const formatAddress = (address: any) => {
     if (!address) return '';
@@ -39,16 +39,21 @@ const Nav = () => {
   };
 
   return (
-    <div>
-      {loading && <p>Initializing transport...</p>}
-      {error && <p>Error: {error}</p>}
-      {!isConnected ? (
-        <button onClick={connect} disabled={loading}>
-          Connect Ledger
-        </button>
-      ) : (
-        <p>Connected to Ledger, Address: {formatAddress(ethAddress)}</p>
-      )}
+    <div className="navbar">
+      <div className="logo">
+        <h1 className="title">My Ledger App</h1>
+      </div>
+      <div className="actions">
+        {loading && <p className="loading">Initializing transport...</p>}
+        {error && <p className="error">Error: {error}</p>}
+        {!isConnected ? (
+          <button onClick={connect} disabled={loading} className="button">
+            Connect Ledger
+          </button>
+        ) : (
+          <p className="connected">Connected: {formatAddress(ethAddress)}</p>
+        )}
+      </div>
     </div>
   );
 };
