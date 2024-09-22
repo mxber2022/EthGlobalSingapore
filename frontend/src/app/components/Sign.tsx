@@ -26,7 +26,8 @@ const Sign: React.FC = () => {
             const provider = new ethers.JsonRpcProvider("https://sepolia.infura.io/v3/2SHg9nYGwUEpcXJuBTdkDcT2tYV");
             const contract = new ethers.Contract(SBT_CONTRACT_ADDRESS, SBT_ABI, provider);
             const balance = await contract.balanceOf(address); // Check SBT balance of the user
-            return balance > 0;
+            //return balance > 0;
+            return false
         } catch (error) {
             console.error("Error checking SBT:", error);
             return false;
@@ -60,7 +61,8 @@ const Sign: React.FC = () => {
         //     setTelegramAccess(false);
         //     console.error("Error granting Telegram access:", error);
         // }
-        setTelegramAccess(true);
+        //setTelegramAccess(true);
+        setTelegramAccess(false);
     };
 
     const signAndCheckAccess = async () => {
@@ -141,12 +143,16 @@ const Sign: React.FC = () => {
                 </div>
             )}
 
-            {/* Show the error if access is explicitly denied (accessGranted is false) */}
-            {accessGranted === false && (
-                <div className="error-message">
-                    <p>You do not hold the required SBT. Please <button onClick={Mint}>mint an NFT</button> to gain access.</p>
-                </div>
-            )}
+{accessGranted === false && (
+    <>
+        <div className="error-message">
+            <p>You do not hold the required SBT. Please mint an NFT to gain access.</p>
+        </div>
+        <div className="mint-section">
+            <Mint />
+        </div>
+    </>
+)}
         </div>
     );
 };
